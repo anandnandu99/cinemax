@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "Shows")
 public class Show {
@@ -18,6 +19,7 @@ public class Show {
     private int id;
 
     private String showName;
+    
     private LocalDateTime showDateTime; // Represents both date and time
 
     @ManyToOne

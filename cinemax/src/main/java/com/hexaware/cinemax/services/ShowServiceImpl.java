@@ -43,7 +43,12 @@ public class ShowServiceImpl implements IShowService {
     public void removeShowById(int id) {
         showRepository.deleteById(id);
     }
-
+    @Override
+    public List<ShowDTO> getAllShowsByMovieName(String movieName) {
+        return showRepository.findByMovie_Title(movieName).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
     // Other methods for updating shows, retrieving shows by name, etc.
 
     private ShowDTO convertToDTO(Show show) {
@@ -51,8 +56,17 @@ public class ShowServiceImpl implements IShowService {
         showDTO.setId(show.getId());
         showDTO.setShowName(show.getShowName());
         showDTO.setShowDateTime(show.getShowDateTime());
-        showDTO.setTheatreName(show.getTheatre().getName());
-        showDTO.setMovieName(show.getMovie().getTitle());
+        
+        Theatre theatre = show.getTheatre();
+        if (theatre != null) {
+            showDTO.setTheatreName(theatre.getName());
+        }
+
+        Movie movie = show.getMovie();
+        if (movie != null) {
+            showDTO.setMovieName(movie.getTitle());
+        }
+
         return showDTO;
     }
 

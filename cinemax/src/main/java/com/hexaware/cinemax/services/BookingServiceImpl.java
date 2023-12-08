@@ -8,6 +8,11 @@ import com.hexaware.cinemax.entities.User;  // Import User entity
 import com.hexaware.cinemax.repositories.BookingRepository;
 import com.hexaware.cinemax.repositories.ShowRepository;
 import com.hexaware.cinemax.repositories.UserRepository;  // Import UserRepository
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +53,27 @@ public class BookingServiceImpl implements IBookingService {
         // Save the booking entity to the database
         bookingRepository.save(booking);
     }
-    
+    @Override
+    public List<String> getSeatNumbersByShowId(int showId) {
+        List<String> bookings = bookingRepository.findSeatNumbersByShowId(showId);
+        return bookings.stream()
+                .flatMap((String numbers) -> Arrays.stream(numbers.split(",")))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<String> getSeatNumbersByUserId(int userId) {
+        // Fetch all bookings for the user from the repository
+        List<String> userBookings = bookingRepository.findSeatNumbersByUserId(userId);
+
+        // Convert the list of seat numbers to a flat list
+        return userBookings.stream()
+                .flatMap((String numbers) -> Arrays.stream(numbers.split(",")))
+                .collect(Collectors.toList());
+    }
+
+
+
+
 
     // Implement other methods for updating and retrieving bookings
 }

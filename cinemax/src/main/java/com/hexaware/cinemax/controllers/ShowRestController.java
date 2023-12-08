@@ -33,6 +33,11 @@ public class ShowRestController {
         showService.removeShowById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/byMovie/{movieName}")
+    public ResponseEntity<List<ShowDTO>> getAllShowsByMovieName(@PathVariable String movieName) {
+        List<ShowDTO> shows = showService.getAllShowsByMovieName(movieName);
+        return new ResponseEntity<>(shows, HttpStatus.OK);
+    }
 
     // Other methods for updating shows, retrieving shows by ID, etc.
 }

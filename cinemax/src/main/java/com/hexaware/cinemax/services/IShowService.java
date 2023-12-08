@@ -12,4 +12,6 @@ public interface IShowService {
 
     void removeShowById(int id);
 
+    List<ShowDTO> getAllShowsByMovieName(String movieName);
+
 }
